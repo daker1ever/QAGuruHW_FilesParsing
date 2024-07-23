@@ -1,9 +1,12 @@
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
+import jsonBlanks.Menu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -38,6 +41,14 @@ public class FileParsingTests {
 
                 }
             }
+        }
+    }
+    @Test
+    void jsonFileParsingTest() throws Exception {
+        try (InputStream is = cl.getResourceAsStream("exampleJson.json")) {
+            ObjectMapper om = new ObjectMapper();
+            Menu menu = om.readValue(is, Menu.class);
+            Assertions.assertEquals("New",menu.getMenu().getPopup().getMenuItem().get(0).getValue());
         }
     }
 }
